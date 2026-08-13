@@ -39,7 +39,7 @@ export default function Navbar() {
     >
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontFamily: 'var(--font-outfit)', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em', zIndex: 60 }}>
-          <img src="/logo.png" alt="Himidi Graphics" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid var(--accent-gold)' }} />
+          <img src="/HGLogo.png" alt="Himidi Graphics" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid var(--accent-gold)' }} />
           <span>Himidi<span style={{ color: 'var(--accent-gold)' }}>.</span></span>
         </Link>
         

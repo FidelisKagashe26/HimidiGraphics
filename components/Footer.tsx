@@ -6,7 +6,7 @@ export default function Footer() {
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-              <img src="/logo.png" alt="Himidi Graphics" style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--accent-gold)' }} />
+              <img src="/HGLogo.png" alt="Himidi Graphics" style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--accent-gold)' }} />
               <h2 style={{ fontFamily: 'var(--font-outfit)', fontSize: '2.5rem', fontWeight: 700 }}>Let's work together.</h2>
             </div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Available for freelance opportunities.</p>
