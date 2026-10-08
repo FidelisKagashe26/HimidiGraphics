@@ -63,7 +63,7 @@ export default function SiteFooter() {
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
           <p>
-            Website by{" "}
+            Developed by{" "}
             <a href="https://fiplex.tech/" target="_blank" rel="noopener" className={styles.credit}>
               Fiplex
             </a>
