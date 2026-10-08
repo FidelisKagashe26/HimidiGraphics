@@ -1,206 +1,396 @@
-/* Modern CSS Reset & Setup */
+/* ==========================================================================
+   Himidi Graphics design tokens
+   Text colours are checked against WCAG 2.2 AA (4.5:1 for body text,
+   3:1 for UI boundaries and focus indicators) in both themes.
+   ========================================================================== */
+
 :root {
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-glass: rgba(25, 25, 25, 0.6);
-  --text-primary: #f8f8f8;
-  --text-secondary: #a0a0a0;
-  
-  /* Himidi Graphics Brand Colors */
-  --accent-blue: #1155a5;
-  --accent-gold: #f5a900;
-  --accent-glow: rgba(17, 85, 165, 0.25);
+  --brand-blue: #1155a5;
+  --brand-gold: #f5a900;
+  --on-gold: #111111;
 
-  --font-inter: var(--font-inter), sans-serif;
-  --font-outfit: var(--font-outfit), sans-serif;
-  
-  --spacing-unit: 1rem;
-  --border-radius-sm: 8px;
-  --border-radius-md: 16px;
-  --border-radius-lg: 24px;
+  --container: 1240px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --header-h: 72px;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-bricolage), var(--font-inter), system-ui, sans-serif;
+
+  --step--1: clamp(0.84rem, 0.82rem + 0.1vw, 0.9rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.08rem);
+  --step-1: clamp(1.15rem, 1.08rem + 0.35vw, 1.35rem);
+  --step-2: clamp(1.4rem, 1.25rem + 0.75vw, 1.85rem);
+  --step-3: clamp(1.85rem, 1.5rem + 1.6vw, 2.9rem);
+  --step-4: clamp(2.4rem, 1.8rem + 3vw, 4.4rem);
+  --step-5: clamp(2.8rem, 1.9rem + 4.6vw, 6.2rem);
+
+  color-scheme: light dark;
 }
 
-html.light-mode {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f4f4f9;
-  --bg-glass: rgba(255, 255, 255, 0.8);
-  --text-primary: #111111;
-  --text-secondary: #555555;
-  
-  /* Keep brand colors or slightly adjust for contrast */
-  --accent-blue: #0d4282;
-  --accent-gold: #d19000;
-  --accent-glow: rgba(17, 85, 165, 0.15);
+/* Light theme (default when the OS asks for light or no preference) */
+:root,
+:root[data-theme="light"] {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface-2: #efece5;
+  --text: #14130f;
+  --muted: #56524b;
+  --accent-text: #8a5a00;
+  --link: #1155a5;
+  --line: rgba(20, 19, 15, 0.12);
+  --line-strong: #8a867e;
+  --focus: #1155a5;
+  --shadow: 0 1px 2px rgba(20, 19, 15, 0.06), 0 12px 32px rgba(20, 19, 15, 0.08);
+  --header-bg: rgba(247, 245, 240, 0.82);
+  color-scheme: light;
 }
 
-@media (max-width: 768px) {
-  .heading-hero { font-size: 2.5rem !important; }
-  .heading-section { font-size: 2rem !important; }
-  section { padding: 4rem 0 !important; }
-  .desktop-only { display: none !important; }
+:root[data-theme="dark"] {
+  --bg: #0c0c0d;
+  --surface: #161618;
+  --surface-2: #1f1f22;
+  --text: #f4f2ee;
+  --muted: #a6a29b;
+  --accent-text: #f5a900;
+  --link: #7fb0ff;
+  --line: rgba(244, 242, 238, 0.12);
+  --line-strong: #6b675f;
+  --focus: #f5a900;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.45);
+  --header-bg: rgba(12, 12, 13, 0.8);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c0c0d;
+    --surface: #161618;
+    --surface-2: #1f1f22;
+    --text: #f4f2ee;
+    --muted: #a6a29b;
+    --accent-text: #f5a900;
+    --link: #7fb0ff;
+    --line: rgba(244, 242, 238, 0.12);
+    --line-strong: #6b675f;
+    --focus: #f5a900;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.45);
+    --header-bg: rgba(12, 12, 13, 0.8);
+    color-scheme: dark;
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
-  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-inter);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  flex: 1;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
-/* Glassmorphism Utility */
-.glass {
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
-/* Layout Classes */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+::selection {
+  background: var(--brand-gold);
+  color: var(--on-gold);
+}
+
+/* Focus: visible, 2px+, 3:1 against the page (WCAG 2.4.7 / 2.4.13) */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Layout & utilities
+   ========================================================================== */
+
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
 }
 
-/* Typography Utilities */
-.heading-hero {
-  font-family: var(--font-outfit);
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 1.1;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+.section {
+  padding-block: clamp(4.5rem, 10vw, 8rem);
 }
 
-.heading-section {
-  font-family: var(--font-outfit);
-  font-size: clamp(2rem, 5vw, 3.5rem);
+.section--tight {
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--brand-gold);
+  color: var(--on-gold);
   font-weight: 600;
-  margin-bottom: 2rem;
-  letter-spacing: -0.01em;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease-out);
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.skip-link:focus-visible {
+  transform: none;
 }
 
-.text-accent-gradient {
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-text);
 }
 
-/* Base Styles */
-section {
-  padding: 8rem 0;
+.eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 2px;
+  background: currentColor;
 }
 
-/* Buttons */
+.lead {
+  font-size: var(--step-1);
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.section-head h2 {
+  font-size: var(--step-4);
+  max-width: 16ch;
+  margin-top: 1rem;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  transition: text-decoration-color 0.2s;
+}
+
+.text-link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ==========================================================================
+   Buttons (min 48px tall: WCAG 2.5.8, Material/HIG target sizes)
+   ========================================================================== */
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.8rem 2rem;
-  border-radius: 100px;
-  font-weight: 500;
-  font-size: 1rem;
-  font-family: inherit;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0.75rem 1.6rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: var(--step-0);
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.25s var(--ease-out),
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.25s;
 }
 
-/* Custom Cursor */
-@media (pointer: fine) and (hover: hover) {
-  body, a, button, [role="button"], input, select, textarea {
-    cursor: none;
+.btn svg {
+  flex-shrink: 0;
+}
+
+.btn--primary {
+  background: var(--brand-gold);
+  color: var(--on-gold);
+}
+
+.btn--primary:hover {
+  background: #ffb81f;
+  box-shadow: 0 10px 28px rgba(245, 169, 0, 0.3);
+}
+
+.btn--ghost {
+  border-color: var(--line-strong);
+  color: var(--text);
+  background: transparent;
+}
+
+.btn--ghost:hover {
+  background: var(--surface-2);
+}
+
+.btn--lg {
+  min-height: 56px;
+  padding: 1rem 2rem;
+  font-size: var(--step-1);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn:hover {
+    transform: translateY(-2px);
   }
 }
 
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 32px;
-  height: 32px;
-  background: var(--text-primary);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  will-change: transform;
-  opacity: 0.8;
+/* ==========================================================================
+   Motion: scroll reveals use CSS scroll-driven animations, so content is
+   never hidden when JS is slow/off, and nothing moves for reduced-motion users.
+   ========================================================================== */
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.custom-cursor-glow {
-  position: fixed;
-  top: -150px;
-  left: -150px;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  will-change: transform;
-  filter: blur(20px);
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
 }
 
-.btn-primary {
-  background: var(--text-primary);
-  color: var(--bg-primary);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-}
-
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.8s ease forwards;
-}
-
-/* Ambient Background Glow */
-.bg-glow {
-  position: absolute;
-  width: 60vw;
-  height: 60vw;
-  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-  top: -30vw;
-  right: -30vw;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: -1;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

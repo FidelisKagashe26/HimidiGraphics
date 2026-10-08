@@ -1,0 +1,77 @@
+.grid {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+}
+
+.heading {
+  font-size: var(--step-3);
+  margin-bottom: 1.5rem;
+}
+
+.copy {
+  display: grid;
+  gap: 1.25rem;
+  font-size: var(--step-1);
+  max-width: 60ch;
+}
+
+.copy p {
+  color: var(--muted);
+}
+
+.copy p:first-of-type {
+  color: var(--text);
+}
+
+.figure {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+.caption {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.principlesSection {
+  background: var(--surface);
+  border-block: 1px solid var(--line);
+}
+
+.principles {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 700px) {
+  .principles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.principle {
+  display: grid;
+  gap: 0.75rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.principleTitle {
+  font-size: var(--step-2);
+}

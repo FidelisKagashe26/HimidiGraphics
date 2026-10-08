@@ -1,0 +1,32 @@
+.label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  color: var(--on-gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  will-change: transform;
+  transition:
+    opacity 0.25s,
+    scale 0.35s var(--ease-out);
+}
+
+.label[data-visible="false"] {
+  opacity: 0;
+  scale: 0.4;
+}
+
+.label[data-visible="true"] {
+  opacity: 1;
+  scale: 1;
+}

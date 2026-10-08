@@ -1,0 +1,151 @@
+.list {
+  border-top: 1px solid var(--line);
+}
+
+.service {
+  display: grid;
+  gap: 1.25rem 2rem;
+  padding-block: clamp(2rem, 5vw, 3.5rem);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 860px) {
+  .service {
+    grid-template-columns: 4rem minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.index {
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--accent-text);
+  padding-top: 0.6rem;
+}
+
+.title {
+  font-size: var(--step-4);
+}
+
+.summary {
+  margin-top: 1rem;
+  max-width: 46ch;
+  font-size: var(--step-1);
+  color: var(--muted);
+}
+
+.items {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 0.5rem;
+}
+
+.items li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 500;
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--accent-text);
+}
+
+.processSection {
+  background: var(--surface);
+  border-block: 1px solid var(--line);
+}
+
+.steps {
+  display: grid;
+  gap: 2.5rem 2rem;
+}
+
+@media (min-width: 640px) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.step {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--brand-gold);
+}
+
+.stepNum {
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+.stepTitle {
+  font-size: var(--step-2);
+}
+
+.faqWrap {
+  display: grid;
+  gap: 2rem clamp(2rem, 6vw, 5rem);
+}
+
+@media (min-width: 860px) {
+  .faqWrap {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.faqTitle {
+  margin-top: 1rem;
+  font-size: var(--step-4);
+}
+
+.faqs {
+  border-top: 1px solid var(--line);
+}
+
+.faq {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 64px;
+  padding-block: 1rem;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.plus {
+  flex-shrink: 0;
+  color: var(--accent-text);
+  transition: rotate 0.3s var(--ease-out);
+}
+
+.faq[open] .plus {
+  rotate: 45deg;
+}
+
+.faq p {
+  padding-bottom: 1.5rem;
+  max-width: 62ch;
+  color: var(--muted);
+}
