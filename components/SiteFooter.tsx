@@ -58,9 +58,17 @@ export default function SiteFooter() {
       </div>
 
       <div className={`container ${styles.bottom}`}>
-        <p>
-          © {new Date().getFullYear()} {site.name}. All rights reserved.
-        </p>
+        <div className={styles.legal}>
+          <p>
+            © {new Date().getFullYear()} {site.name}. All rights reserved.
+          </p>
+          <p>
+            Website by{" "}
+            <a href="https://fiplex.tech/" target="_blank" rel="noopener" className={styles.credit}>
+              Fiplex
+            </a>
+          </p>
+        </div>
         <p className={styles.location}>
           <MapPin size={16} aria-hidden="true" /> Based in {site.location}
         </p>
