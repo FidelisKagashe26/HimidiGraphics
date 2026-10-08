@@ -1,48 +1,29 @@
 #!/usr/bin/env bash
-# ONE-TIME server preparation (Ubuntu/Debian). Run as the deploy user, who must have sudo:
-#   bash setup-server.sh
+# ONE-TIME server setup, run as root from a checkout of this repo:
+#   bash deploy/setup-server.sh
+# Expects the Cloudflare origin certificate at
+#   /etc/ssl/cloudflare/himidgraphix.pro.pem and .key
 # Afterwards every push to main deploys automatically via GitHub Actions.
 set -euo pipefail
 
-APP_DIR="/var/www/himidgraphix"
-DOMAIN="himidgraphix.pro"
-EMAIL="hello@himidgraphix.pro"   # Let's Encrypt expiry notices
-DEPLOY_USER="$(whoami)"
+here="$(cd "$(dirname "$0")" && pwd)"
 
-echo "==> Packages: git, curl, nginx, certbot"
-sudo apt-get update -y
-sudo apt-get install -y git curl nginx certbot python3-certbot-nginx
+test -f /etc/ssl/cloudflare/himidgraphix.pro.pem
+test -f /etc/ssl/cloudflare/himidgraphix.pro.key
 
-if ! command -v node >/dev/null || [ "$(node -p 'process.versions.node.split(".")[0]')" -lt 20 ]; then
-  echo "==> Node.js 22 LTS"
-  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-  sudo apt-get install -y nodejs
-fi
-
-if ! command -v pm2 >/dev/null; then
-  echo "==> PM2"
-  sudo npm install -g pm2
-fi
-
-echo "==> App directory $APP_DIR"
-sudo mkdir -p "$APP_DIR/releases"
-sudo chown -R "$DEPLOY_USER":"$DEPLOY_USER" "$APP_DIR"
+echo "==> systemd service"
+install -m 644 "$here/himidgraphix-web.service" /etc/systemd/system/himidgraphix-web.service
+systemctl daemon-reload
+systemctl enable himidgraphix-web.service
 
 echo "==> First deploy"
-curl -fsSL https://raw.githubusercontent.com/FidelisKagashe26/HimidiGraphics/main/deploy/deploy.sh | bash
-
-echo "==> PM2 on boot"
-sudo env PATH="$PATH" pm2 startup systemd -u "$DEPLOY_USER" --hp "$HOME" >/dev/null
-pm2 save
+mkdir -p /var/www/himidgraphix/releases
+bash "$here/deploy.sh"
 
 echo "==> nginx"
-sudo cp "$APP_DIR/current/deploy/nginx.conf" "/etc/nginx/sites-available/$DOMAIN"
-sudo ln -sfn "/etc/nginx/sites-available/$DOMAIN" "/etc/nginx/sites-enabled/$DOMAIN"
-sudo nginx -t
-sudo systemctl reload nginx
+install -m 644 "$here/nginx.conf" /etc/nginx/sites-available/himidgraphix.conf
+ln -sfn /etc/nginx/sites-available/himidgraphix.conf /etc/nginx/sites-enabled/himidgraphix.conf
+nginx -t
+systemctl reload nginx
 
-echo "==> HTTPS (needs DNS for $DOMAIN and www.$DOMAIN pointing at this server)"
-sudo certbot --nginx --non-interactive --agree-tos -m "$EMAIL" \
-  -d "$DOMAIN" -d "www.$DOMAIN" --redirect
-
-echo "==> Done: https://$DOMAIN"
+echo "==> Done: https://himidgraphix.pro"

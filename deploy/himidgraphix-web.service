@@ -1,0 +1,23 @@
+# /etc/systemd/system/himidgraphix-web.service
+[Unit]
+Description=Himidi Graphics website (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/himidgraphix/current
+Environment=NODE_ENV=production
+Environment=NEXT_TELEMETRY_DISABLED=1
+Environment=NEXT_PUBLIC_SITE_URL=https://himidgraphix.pro
+ExecStart=/usr/bin/env node node_modules/next/dist/bin/next start -p 8101 -H 127.0.0.1
+Restart=always
+RestartSec=5
+MemoryMax=600M
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

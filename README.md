@@ -35,15 +35,15 @@ The contact form needs no backend: it composes the brief into a WhatsApp message
 
 ## Deployment (VPS + GitHub Actions)
 
-Every push to `main` runs lint and build, then deploys over SSH (`.github/workflows/deploy.yml`). On the server, `deploy/deploy.sh` clones the latest `main` into a new release folder, builds it, switches the `current` symlink, reloads PM2 and health-checks the site, rolling back automatically if the new release does not respond.
+Every push to `main` runs lint and build, then deploys over SSH (`.github/workflows/deploy.yml`). On the server, `deploy/deploy.sh` clones the latest `main` into `/var/www/himidgraphix/releases/<timestamp>`, builds it, switches the `current` symlink, restarts the `himidgraphix-web` systemd service (Next.js on 127.0.0.1:8101) and health-checks it, rolling back automatically if the new release does not respond. nginx (`/etc/nginx/sites-available/himidgraphix.conf`) serves it behind Cloudflare with the origin certificate in `/etc/ssl/cloudflare/`.
 
 **Repository secrets** (Settings → Secrets and variables → Actions):
 
 | Secret | Value |
 | --- | --- |
-| `VPS_HOST` | Server IP or hostname |
-| `VPS_USER` | SSH user that owns `/var/www/himidgraphix` |
-| `VPS_B64` | That user's private SSH key, base64-encoded on one line (`base64 -w0 ~/.ssh/id_ed25519`) |
+| `VPS_HOST` | Server IP |
+| `VPS_USER` | `root` |
+| `VPS_B64` | Private key of the `github-actions-himidgraphix` deploy key, base64-encoded on one line |
 | `VPS_PORT` | Optional, defaults to `22` |
 
-**One-time server setup:** point the `himidgraphix.pro` and `www.himidgraphix.pro` A records at the VPS, then on the server run `deploy/setup-server.sh`. It installs Node 22, PM2, nginx and a Let's Encrypt certificate, and does the first deploy.
+**One-time server setup:** place the Cloudflare origin certificate at `/etc/ssl/cloudflare/himidgraphix.pro.pem` and `.key`, then from a checkout of this repo run `bash deploy/setup-server.sh` as root.
